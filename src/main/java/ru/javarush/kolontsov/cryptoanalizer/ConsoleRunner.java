@@ -11,6 +11,6 @@ public class ConsoleRunner {
     }
 }
 
-//    int key = 3; //ключ по заданию - args
+// int key = 3; //ключ по заданию - args
 // какой-то исходный текст - args
 // зашифрованный текст - args
