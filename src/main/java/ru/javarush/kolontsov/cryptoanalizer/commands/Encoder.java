@@ -2,6 +2,7 @@ package ru.javarush.kolontsov.cryptoanalizer.commands;
 
 import ru.javarush.kolontsov.cryptoanalizer.constants.Constants;
 import ru.javarush.kolontsov.cryptoanalizer.entity.Result;
+import ru.javarush.kolontsov.cryptoanalizer.entity.ResultCode;
 import ru.javarush.kolontsov.cryptoanalizer.exceptions.AppException;
 
 import java.io.BufferedReader;
@@ -38,6 +39,6 @@ public class Encoder implements Action{
         } catch (IOException e) {
             throw new AppException(e.getMessage(), e);
         }
-        return null;
+        return new Result("Encoder complete", ResultCode.OK);
     }
 }

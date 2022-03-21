@@ -33,7 +33,7 @@ public class Decoder implements Action{
                 Character character = (char) reader.read();
                 if (indexOfAlphabet.containsKey(character)) {
                     Integer index = indexOfAlphabet.get(character);
-                    index = (index + key) % Constants.ALPHABET.length;
+                    index = (index - key) % Constants.ALPHABET.length;
                     writer.write(Constants.ALPHABET[index]);
                 } else {
                     writer.append(character);
