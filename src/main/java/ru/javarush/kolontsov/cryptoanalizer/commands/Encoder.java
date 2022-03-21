@@ -27,13 +27,12 @@ public class Encoder implements Action{
         ) {
             while (reader.ready()) {
                 Character character = (char) reader.read();
-                if (!indexOfAlphabet.containsKey(character)) {
-                    char c = ' ';
-                    writer.write(c);
-                } else {
+                if (indexOfAlphabet.containsKey(character)) {
                     Integer index = indexOfAlphabet.get(character);
                     index = (index + key) % Constants.ALPHABET.length;
                     writer.write(Constants.ALPHABET[index]);
+                } else {
+                    writer.append(character);
                 }
             }
         } catch (IOException e) {
