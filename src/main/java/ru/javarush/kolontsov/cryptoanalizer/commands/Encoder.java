@@ -15,13 +15,18 @@ import java.util.HashMap;
 public class Encoder implements Action{
     @Override
     public Result execute(String[] parameters) {
+
         String originalText = parameters[0];
         String encryptedText = parameters[1];
         int key = Integer.parseInt(parameters[2]);
+
+
         HashMap<Character, Integer> indexOfAlphabet = new HashMap<>();
         for (int i = 0; i < Constants.ALPHABET.length; i++) {
             indexOfAlphabet.put(Constants.ALPHABET[i], i);
         }
+
+        // пробуем зашифровать...надеюсь все работать будет без косяков
         try (
                 BufferedReader reader = Files.newBufferedReader(Path.of(originalText));
                 BufferedWriter writer = Files.newBufferedWriter(Path.of(encryptedText))
