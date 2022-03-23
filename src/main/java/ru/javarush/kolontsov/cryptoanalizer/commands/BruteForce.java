@@ -49,6 +49,7 @@ public class BruteForce implements Action{
             }
         }
 
+
         // write decoded text to a new file
         WriteDecodedText.writeDecodedText(decoderText, stock, indexOfAlphabet);
 
