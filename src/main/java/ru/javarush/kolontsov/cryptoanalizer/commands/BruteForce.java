@@ -1,5 +1,6 @@
 package ru.javarush.kolontsov.cryptoanalizer.commands;
 
+import ru.javarush.kolontsov.cryptoanalizer.brute.CheckWords;
 import ru.javarush.kolontsov.cryptoanalizer.brute.CondCheck;
 import ru.javarush.kolontsov.cryptoanalizer.brute.DecodeInputText;
 import ru.javarush.kolontsov.cryptoanalizer.brute.WriteDecodedText;
@@ -23,6 +24,7 @@ public class BruteForce implements Action{
         String decoderText = parameters[1];
         int key;
         StringBuilder stock = new StringBuilder();
+        int alignment = 0;
 
         List<Character> indexOfAlphabet = new ArrayList<>();
         for (int i = 0; i < Constants.ALPHABET.length; i++) {
@@ -38,9 +40,12 @@ public class BruteForce implements Action{
                 DecodeInputText.decodeInputText(indexOfAlphabet, j, result, reader);
                 //check encrypted text
                 if (CondCheck.condCheck(result.toString()) == 0) {
-                    stock = result;
-                    key = j;
-                    stock.append("\n Ключ: ").append(key);
+                    if (CheckWords.checkWords(result.toString()) > alignment) {
+                        alignment = CheckWords.checkWords(result.toString());
+                        stock = result;
+                        key = j;
+                        stock.append("\n Ключ: ").append(key);
+                    }
                 } else {
                     result.delete(0, result.length());
                 }
@@ -48,7 +53,6 @@ public class BruteForce implements Action{
                 throw new AppException(e.getMessage(), e);
             }
         }
-
 
         // write decoded text to a new file
         WriteDecodedText.writeDecodedText(decoderText, stock, indexOfAlphabet);
