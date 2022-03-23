@@ -10,7 +10,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Encoder implements Action{
     @Override
@@ -21,20 +22,20 @@ public class Encoder implements Action{
         int key = Integer.parseInt(parameters[2]);
 
 
-        HashMap<Character, Integer> indexOfAlphabet = new HashMap<>();
+        List<Character> indexOfAlphabet = new ArrayList<>();
         for (int i = 0; i < Constants.ALPHABET.length; i++) {
-            indexOfAlphabet.put(Constants.ALPHABET[i], i);
+            indexOfAlphabet.add(Constants.ALPHABET[i]);
         }
 
-        // пробуем зашифровать...надеюсь все работать будет без косяков
+
         try (
                 BufferedReader reader = Files.newBufferedReader(Path.of(originalText));
                 BufferedWriter writer = Files.newBufferedWriter(Path.of(encryptedText))
         ) {
             while (reader.ready()) {
-                Character character = (char) reader.read();
-                if (indexOfAlphabet.containsKey(character)) {
-                    Integer index = indexOfAlphabet.get(character);
+                char character = (char) reader.read();
+                if (indexOfAlphabet.contains(character)) {
+                    int index = indexOfAlphabet.indexOf(character);
                     index = (index + key) % Constants.ALPHABET.length;
                     writer.write(Constants.ALPHABET[index]);
                 } else {

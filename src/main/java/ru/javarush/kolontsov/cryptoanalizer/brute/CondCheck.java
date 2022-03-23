@@ -1,4 +1,4 @@
-package ru.javarush.kolontsov.cryptoanalizer.commands;
+package ru.javarush.kolontsov.cryptoanalizer.brute;
 
 public class CondCheck {
     public static int condCheck(String result) {

@@ -1,12 +1,14 @@
 package ru.javarush.kolontsov.cryptoanalizer.commands;
 
+import ru.javarush.kolontsov.cryptoanalizer.brute.CondCheck;
+import ru.javarush.kolontsov.cryptoanalizer.brute.DecodeInputText;
+import ru.javarush.kolontsov.cryptoanalizer.brute.WriteDecodedText;
 import ru.javarush.kolontsov.cryptoanalizer.constants.Constants;
 import ru.javarush.kolontsov.cryptoanalizer.entity.Result;
 import ru.javarush.kolontsov.cryptoanalizer.entity.ResultCode;
 import ru.javarush.kolontsov.cryptoanalizer.exceptions.AppException;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,19 +35,7 @@ public class BruteForce implements Action{
 
             //encrypt text
             try (BufferedReader reader = Files.newBufferedReader(Path.of(encodedText))) {
-                while (reader.ready()) {
-                    Character character = (char) reader.read();
-                    if (!indexOfAlphabet.contains(character)) {
-                        result.append(character);
-                    } else {
-                        int old = indexOfAlphabet.indexOf(character);
-                        int newIndex = (old - j) % Constants.ALPHABET.length;
-                        if (newIndex < 0) {
-                            newIndex = Constants.ALPHABET.length + newIndex;
-                        }
-                        result.append(Constants.ALPHABET[newIndex]);
-                    }
-                }
+                DecodeInputText.decodeInputText(indexOfAlphabet, j, result, reader);
                 //check encrypted text
                 if (CondCheck.condCheck(result.toString()) == 0) {
                     stock = result;
@@ -60,18 +50,7 @@ public class BruteForce implements Action{
         }
 
         // write decoded text to a new file
-        try (BufferedWriter writer= Files.newBufferedWriter(Path.of(decoderText))) {
-            for (int i = 0; i < stock.length(); i++) {
-                char character = stock.charAt(i);
-                if (!indexOfAlphabet.contains(character)) {
-                    writer.write(character);
-                    continue;
-                }
-                writer.write(character);
-            }
-        } catch (IOException e) {
-            throw new AppException(e.getMessage(), e);
-        }
+        WriteDecodedText.writeDecodedText(decoderText, stock, indexOfAlphabet);
 
         return new Result("BruteForce complete", ResultCode.OK);
     }
