@@ -27,7 +27,6 @@ public class Decoder implements Action{
             indexOfAlphabet.add(Constants.ALPHABET[i]);
         }
 
-
         try (
                 BufferedReader reader = Files.newBufferedReader(Path.of(encodedText));
                 BufferedWriter writer= Files.newBufferedWriter((Path.of(decoderText)))
@@ -36,6 +35,7 @@ public class Decoder implements Action{
                 char character = (char) reader.read();
                 if (indexOfAlphabet.contains(character)) {
                     int index = indexOfAlphabet.indexOf(character);
+                    //TODO ---  отличие кодера от декодера только в этой строчке а значит идет дубликация кода
                     index = (index - key) % Constants.ALPHABET.length;
                     writer.write(Constants.ALPHABET[index]);
                 } else {

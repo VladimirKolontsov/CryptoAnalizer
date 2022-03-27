@@ -16,6 +16,7 @@ public class CondCheck {
 
     public static int symbols(String result, int i) {
         if (i < result.length() - 1) {
+            //TODO ---  константа захардкожена. надо выносить в поле. в понятное место. с понятным именем
             if ("ьъйёчыщЬЪЙЁЧЫЩ".contains(String.valueOf(result.charAt(i))) &&
                     String.valueOf(result.charAt(i)).equalsIgnoreCase(String.valueOf(result.charAt(i+1)))) {
                 return 1;

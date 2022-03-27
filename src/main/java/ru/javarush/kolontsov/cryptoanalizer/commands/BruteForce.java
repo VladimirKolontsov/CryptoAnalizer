@@ -3,13 +3,13 @@ package ru.javarush.kolontsov.cryptoanalizer.commands;
 import ru.javarush.kolontsov.cryptoanalizer.brute.CheckWords;
 import ru.javarush.kolontsov.cryptoanalizer.brute.CondCheck;
 import ru.javarush.kolontsov.cryptoanalizer.brute.DecodeInputText;
-import ru.javarush.kolontsov.cryptoanalizer.brute.WriteDecodedText;
 import ru.javarush.kolontsov.cryptoanalizer.constants.Constants;
 import ru.javarush.kolontsov.cryptoanalizer.entity.Result;
 import ru.javarush.kolontsov.cryptoanalizer.entity.ResultCode;
 import ru.javarush.kolontsov.cryptoanalizer.exceptions.AppException;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,8 +55,23 @@ public class BruteForce implements Action{
         }
 
         // write decoded text to a new file
-        WriteDecodedText.writeDecodedText(decoderText, stock, indexOfAlphabet);
+        writeDecodedText(decoderText, stock, indexOfAlphabet);
 
         return new Result("BruteForce complete", ResultCode.OK);
+    }
+
+    private void writeDecodedText(String decoderText, StringBuilder stock, List<Character> indexOfAlphabet) {
+        try (BufferedWriter writer= Files.newBufferedWriter(Path.of(decoderText))) {
+            for (int i = 0; i < stock.length(); i++) {
+                char character = stock.charAt(i);
+                if (!indexOfAlphabet.contains(character)) {
+                    writer.write(character);
+                    continue;
+                }
+                writer.write(character);
+            }
+        } catch (IOException e) {
+            throw new AppException(e.getMessage(), e);
+        }
     }
 }
